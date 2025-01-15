@@ -1,0 +1,99 @@
+{% extends "./base.html" %}
+{% load static %}
+
+{% block content %}
+
+<section class="bg-light py-5">
+    <div class="container p-4 rounded shadow-sm bg-white">
+        <h2 class="text-center mb-5 text-primary">Terms and Conditions</h2>
+
+        <div class="mb-4">
+            <h3 class="text-primary">1. Introduction</h3>
+            <p class="text-muted">
+                Welcome to <strong>FoodMart</strong>. By using our website, you agree to comply with and be bound by the following terms and conditions. Please read them carefully before using our services.
+            </p>
+        </div>
+
+        <div class="mb-4">
+            <h3 class="text-primary">2. Account Registration</h3>
+            <p class="text-muted">
+                To access certain features of our website, you may be required to register an account. You are responsible for maintaining the confidentiality of your account credentials and ensuring all information provided is accurate and up-to-date.
+            </p>
+        </div>
+
+        <div class="mb-4">
+            <h3 class="text-primary">3. Product Availability</h3>
+            <p class="text-muted">
+                All products are subject to availability. While we strive to ensure accurate stock information, there may be rare instances where items are unavailable after your order has been placed. In such cases, we will notify you and provide alternatives or a refund.
+            </p>
+        </div>
+
+        <div class="mb-4">
+            <h3 class="text-primary">4. Pricing and Payment</h3>
+            <p class="text-muted">
+                Prices listed on our website are inclusive of applicable taxes unless stated otherwise. We reserve the right to update prices without prior notice. Payments must be made in full at the time of purchase through the available payment options on our website.
+            </p>
+        </div>
+
+        <div class="mb-4">
+            <h3 class="text-primary">5. Shipping and Delivery</h3>
+            <p class="text-muted">
+                Delivery timelines are estimates and may vary due to unforeseen circumstances. FreshMart is not liable for delays caused by third-party delivery services. Please ensure your shipping address is accurate to avoid any issues.
+            </p>
+        </div>
+
+        <div class="mb-4">
+            <h3 class="text-primary">6. Returns and Refunds</h3>
+            <p class="text-muted">
+                We offer a hassle-free return policy for eligible products within 7 days of delivery. Please refer to our <a href="#" class="text-primary">Return Policy</a> page for detailed instructions. Refunds will be processed to the original payment method within 7-10 business days.
+            </p>
+        </div>
+
+        <div class="mb-4">
+            <h3 class="text-primary">7. Prohibited Activities</h3>
+            <p class="text-muted">
+                You agree not to misuse our website, including but not limited to:
+            </p>
+            <ul class="text-muted list-unstyled ps-3">
+                <li><i class="fa fa-ban text-danger me-2"></i> Violating any laws or regulations.</li>
+                <li><i class="fa fa-ban text-danger me-2"></i> Hacking, phishing, or attempting unauthorized access.</li>
+                <li><i class="fa fa-ban text-danger me-2"></i> Spamming or transmitting malicious software.</li>
+            </ul>
+        </div>
+
+        <div class="mb-4">
+            <h3 class="text-primary">8. Limitation of Liability</h3>
+            <p class="text-muted">
+                FreshMart shall not be liable for any indirect, incidental, or consequential damages arising from the use or inability to use our services, including but not limited to loss of profits or data.
+            </p>
+        </div>
+
+        <div class="mb-4">
+            <h3 class="text-primary">9. Changes to Terms</h3>
+            <p class="text-muted">
+                FreshMart reserves the right to modify these terms and conditions at any time. Changes will be effective upon posting on our website. Continued use of our services constitutes acceptance of the updated terms.
+            </p>
+        </div>
+
+        <div class="mb-4">
+            <h3 class="text-primary">10. Contact Us</h3>
+            <p class="text-muted">
+                If you have any questions or concerns regarding these terms, please contact us at:
+            </p>
+            <p class="text-muted">
+                <i class="fa fa-envelope text-primary me-2"></i> support@freshmart.com<br>
+                <i class="fa fa-phone text-primary me-2"></i> +1-800-555-1234
+            </p>
+        </div>
+
+    </div>
+</section>
+
+<section class="bg-primary text-white py-5">
+    <div class="container text-center">
+        <h3>Have More Questions?</h3>
+        <p>We’re here to help! Visit our <a href="{%url 'faq'%}" class="text-white text-decoration-underline">FAQ</a> page or contact our support team.</p>
+    </div>
+</section>
+
+{% endblock %}

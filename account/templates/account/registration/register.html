@@ -1,0 +1,95 @@
+{% include "store/base.html" %}
+
+{% load static %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+
+<br>
+<div class="container d-flex justify-content-center align-items-center min-vh-100" style="font-size: 14px;">
+    <div class="w-100" style="max-width: 350px;"> 
+        <div class="card p-4">
+            <a class="navbar-brand main-heading text-center" href="{% url 'store' %}">
+
+                &nbsp; &nbsp; <img src="{% static 'media/images/logo.png' %}" alt="Logo">
+
+            </a>
+
+            <h4 class="card-title text-center mb-1">Create your account</h4>
+
+
+            <form method="POST" autocomplete="off">
+                {% csrf_token %}
+                    {{form.username | as_crispy_field  }}
+                    
+                <div class="mb-3" style="font-size: 14px;">
+                    {{form.email | as_crispy_field }}
+                </div>
+                <div class="mb-3" style="font-size: 14px;">
+                    <div class="position-relative">
+                        {{form.password1 | as_crispy_field }}
+                        <!-- <span id="togglePassword" class="position-absolute"
+                            style="top: 50%; right: 10px; cursor: pointer;">
+                            <i class="bi bi-eye-slash" id="toggleIcon1"></i>
+                        </span> -->
+                    </div>
+                </div>
+                <div class="mb-3" style="font-size: 14px;">
+                    <div class="position-relative">
+                        {{form.password2 | as_crispy_field}}
+                        <!-- <span id="togglePassword2" class="position-absolute"
+                            style="top: 50%; right: 10px;  cursor: pointer;">
+                            <i class="bi bi-eye-slash" id="toggleIcon2"></i>
+                        </span> -->
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100 mb-3" style="font-size: 14px;"> &nbsp;
+                    Sign Up</button>
+            </form>
+            <p class="text-center fw-normal mb-0" style="font-size: 14px;">Already have an account?
+                <a href="{% url 'my-login' %}">Log in</a>
+            </p>
+
+
+        </div>
+
+
+    </div>
+</div>
+<br><br>
+<script>
+    // JavaScript to toggle password visibility
+    document.getElementById("togglePassword").addEventListener("click", function () {
+        const passwordField = document.querySelector("input[name='password1']");
+        const toggleIcon = document.getElementById("toggleIcon1");
+
+        if (passwordField.type === "password") {
+            passwordField.type = "text";
+            toggleIcon.classList.remove("bi-eye-slash");
+            toggleIcon.classList.add("bi-eye");
+        } else {
+            passwordField.type = "password";
+            toggleIcon.classList.remove("bi-eye");
+            toggleIcon.classList.add("bi-eye-slash");
+        }
+    });
+
+    document.getElementById("togglePassword2").addEventListener("click", function () {
+        const passwordField = document.querySelector("input[name='password2']");
+        const toggleIcon = document.getElementById("toggleIcon2");
+
+        if (passwordField.type === "password") {
+            passwordField.type = "text";
+            toggleIcon.classList.remove("bi-eye-slash");
+            toggleIcon.classList.add("bi-eye");
+        } else {
+            passwordField.type = "password";
+            toggleIcon.classList.remove("bi-eye");
+            toggleIcon.classList.add("bi-eye-slash");
+        }
+    });
+</script>
+{% endblock %}

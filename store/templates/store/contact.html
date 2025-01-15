@@ -1,0 +1,72 @@
+{% extends "./base.html" %}
+{% load static %}
+
+{% block content %}
+
+<section class="bg-light py-5">
+    <div class="container p-4 rounded shadow-sm bg-white">
+        <h2 class="text-center mb-5 text-primary">Contact Us</h2>
+
+        <div class="row">
+            <!-- Contact Information -->
+            <div class="col-md-6 mb-4">
+                <h4 class="text-primary">Get in Touch</h4>
+                <p class="text-muted">We're here to help! Reach out to us through any of the following methods:</p>
+                <ul class="list-unstyled">
+                    <li class="mb-2">
+                        <i class="fa fa-envelope text-primary me-2"></i>
+                        Email: <a href="mailto:support@freshmart.com" class="text-primary">support@foodmart.com</a>
+                    </li>
+                    <li class="mb-2">
+                        <i class="fa fa-phone text-primary me-2"></i>
+                        Phone: <a href="tel:+18005551234" class="text-primary">+1-800-555-1234</a>
+                    </li>
+                    <li class="mb-2">
+                        <i class="fa fa-map-marker text-primary me-2"></i>
+                        Address: Plaza No. ABC- Basment 123, pk
+                    </li>
+                </ul>
+
+                <h4 class="text-primary mt-4">Working Hours</h4>
+                <p class="text-muted">
+                    Monday - Friday: 9:00 AM - 6:00 PM<br>
+                    Saturday: 10:00 AM - 4:00 PM<br>
+                    Sunday: Closed
+                </p>
+            </div>
+
+            <!-- Contact Form -->
+            <div class="col-md-6">
+                <h4 class="text-primary">Send Us a Message</h4>
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="mb-1">
+                        <label for="name" class="form-label mb-0">Name*</label>
+                        <input type="text" class="form-control" id="name" name="name" required placeholder="Enter your name">
+                    </div>
+                    <div class="mb-1">
+                        <label for="email" class="form-label mb-0">Email*</label>
+                        <input type="email" class="form-control" id="email" name="email" required placeholder="Enter your email">
+                    </div>
+                    <!-- <div class="mb-3">
+                        <label for="subject" class="form-label">Subject</label>
+                        <input type="text" class="form-control" id="subject" name="subject" required placeholder="Enter the subject">
+                    </div> -->
+                    <div class="mb-3">
+                        <label for="message" class="form-label mb-0">Message*</label>
+                        <textarea class="form-control" id="message" name="message" rows="5" required placeholder="Type your message here"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">Send Message</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Map Section -->
+<!-- <section class="py-5">
+    <div class="container">
+        <h4 class="text-center mb-4 text-primary">Find Us Here</h4>
+        <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d8992.549668863954!2d74.18534505017409!3d31.38684837822132!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3918ffe7428771af%3A0x9dbec683d5b5b92a!2s786%20Food%20Mart!5e0!3m2!1sen!2s!4v1736101775396!5m2!1sen!2s" width="100%" height="400" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe></section> -->
+
+{% endblock %}

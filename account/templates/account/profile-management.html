@@ -1,0 +1,33 @@
+{% extends "store/base.html" %}
+
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<section class="bg-light">
+    <div class="container d-flex justify-content-center align-items-center min-vh-100">
+        <div class="card p-4" style="max-width: 500px; width: 100%;">
+            <div class="d-flex align-items-center mb-4">
+                <a href="{% url 'dashboard' %}" class="text-primary me-3 fs-5">
+                    <i class="fa-solid fa-arrow-left"></i>
+                </a>
+                <h2 class="mb-0 flex-grow-1 text-center text-primary">
+                    <i class="fa fa-user" aria-hidden="true"></i> Update Your Account
+                </h2>
+            </div>
+            <form method="POST" autocomplete="off">
+                {% csrf_token %}
+                <div class="mb-3">
+                    {{user_form.username | as_crispy_field }}
+                </div>
+                <div class="mb-3">
+                    {{user_form.email | as_crispy_field }}
+                </div>
+                
+                <button type="submit" class="btn btn-primary btn-lg btn-block w-100" style="font-size: 14px;"> &nbsp;
+                Update</button>
+            </form>
+        </div>
+    </div>
+</section>
+{% endblock %}

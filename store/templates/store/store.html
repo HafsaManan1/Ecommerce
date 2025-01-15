@@ -1,0 +1,550 @@
+{% extends "./base.html" %}
+{% load static %}
+
+{% block content %}
+
+<section class="overflow-hidden">
+  <div class="container-fluid">
+    <!-- <div class="row">
+      <div class="col-md-12">
+        <div class="section-header d-flex flex-wrap justify-content-between mb-5">
+          <h2 class="section-title">Category</h2>
+          <div class="d-flex align-items-center">
+            <a href="{% url 'store' %}" class="btn-link text-decoration-none">View All Categories →</a>
+          </div>
+        </div>
+      </div>
+    </div> -->
+    <div class="row">
+      <div class="col-md-12">
+        <div class="d-flex align-items-center category-carousel-wrapper">
+          <!-- Left Swiper Button -->
+          <button class="swiper-prev category-carousel-prev btn btn-yellow">❮</button>
+
+          <!-- Swiper Container -->
+          <div class="category-carousel swiper flex-grow-1">
+            <div class="swiper-wrapper">
+              {% for category in all_categories %}
+              <a href="{{category.get_absolute_url}}" class="nav-link category-item swiper-slide">
+                <img src="{{category.icon.url}}" alt="Category Thumbnail">
+                <h3 class="category-title">{{ category.name | capfirst }}</h3>
+              </a>
+              {% endfor %}
+              <a class="nav-link category-item swiper-slide" onclick="location.href='#target-section'">
+                <img src="{% static 'media/images/expand.png' %}" alt="Category Thumbnail">
+                <h3 class="category-title">Shop All</h3>
+              </a>
+              
+            </div>
+          </div>
+
+          <!-- Right Swiper Button -->
+          <button class="swiper-next category-carousel-next btn btn-yellow">❯</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="py-1"
+  style="background-image: url('media/images/background-pattern.jpg');background-repeat: no-repeat;background-size: cover;">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+
+        <div class="banner-blocks">
+
+          <div class="banner-ad large bg-info block-1">
+
+            <div class="swiper main-swiper">
+              <div class="swiper-wrapper">
+
+                <div class="swiper-slide">
+                  <div class="row banner-content p-5">
+                    <div class="content-wrapper col-md-7">
+                      <div class="categories my-3">100% natural</div>
+                      <h3 class="display-4">Fresh Smoothie & Summer Juice</h3>
+                      <p>Discover the perfect blend of freshness and flavor with our handcrafted smoothies and juices,
+                        made from the finest seasonal fruits to keep you refreshed all summer long.</p>
+                      <a href="{% url 'list-category' 'juices' %}"
+                        class="btn btn-outline-dark btn-lg text-uppercase fs-6 rounded-1 px-4 py-2 mt-3">Shop Now</a>
+                    </div>
+                    <div class="img-wrapper col-md-5">
+                      <img src="{% static 'media/images/product-thumb-1.png'%}" class="img-fluid">
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+
+            </div>
+          </div>
+
+          <div class="banner-ad bg-success-subtle block-2"
+            style='background:url("media/images/ad-image-1.png") no-repeat;background-position: right bottom'>
+            <div class="row banner-content p-5">
+
+              <div class="content-wrapper col-md-7">
+                <!-- <div class="categories sale mb-3 pb-3">20% off</div> -->
+                <h3 class="banner-title">Fruits & Vegetables</h3>
+                <a href="{% url 'list-category' 'fruits' %}" class="d-flex align-items-center nav-link">Shop Collection
+                  <svg width="24" height="24">
+                    <use xlink:href="#arrow-right"></use>
+                  </svg></a>
+              </div>
+
+            </div>
+          </div>
+
+          <div class="banner-ad bg-danger block-3"
+            style="background:url('media/images/ad-image-2.png') no-repeat;background-position: right bottom">
+            <div class="row banner-content p-5">
+
+              <div class="content-wrapper col-md-7">
+                <!-- <div class="categories sale mb-3 pb-3">15% off</div> -->
+                <h3 class="item-title">Baked Products</h3>
+                <a href="{% url 'list-category' 'bakery' %}" class="d-flex align-items-center nav-link">Shop Collection
+                  <svg width="24" height="24">
+                    <use xlink:href="#arrow-right"></use>
+                  </svg></a>
+              </div>
+
+            </div>
+          </div>
+
+
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="overflow-hidden">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="section-header d-flex flex-wrap justify-content-between mb-2">
+          <h3 class="section-title">Recently Added</h3>
+          <div class="d-flex align-items-center">
+            <div class="swiper-buttons d-none"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="d-flex align-items-center">
+          <!-- Left Swiper Button -->
+          <button class="swiper-prev brand-carousel-prev btn btn-yellow me-3">❮</button>
+
+          <!-- Swiper Container -->
+          <div class="brand-carousel swiper flex-grow-1">
+            <div class="swiper-wrapper">
+              {% for product in latest_products %}
+              <div class="swiper-slide">
+                <div class="card mb-3 p-1 rounded-4 shadow border-0">
+                  <div class="row g-0">
+                    <div class="col-md-4">
+                      <a href="{{ product.get_absolute_url }}">
+                        <img src="{{ product.image.url }}" class="img-fluid rounded" alt="Card title">
+                      </a>
+                    </div>
+                    <div class="col-md-8">
+                      <a href="{{ product.get_absolute_url }}" style="text-decoration: none;">
+                        <div class="card-body py-0">
+                          <h5 class="card-title">{{ product.title }}</h5>
+                          <p class="text-muted mb-0">{{ product.brand|slice:":30" }}{% if product.brand|length > 30 %}...{% endif %}</p>
+                          <p class="text-success fw-bold">${{ product.price }}</p>
+                        </div>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+
+          <!-- Right Swiper Button -->
+          <button class="swiper-next brand-carousel-next btn btn-yellow ms-3">❯</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="container-fluid">
+
+    <div class="row">
+      <div class="col-md-12">
+
+        <div class="bootstrap-tabs product-tabs">
+          <div class="tabs-header d-flex justify-content-between border-bottom my-2">
+            <h3 id="target-section">All Products</h3>
+            <nav>
+              <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                <!-- <a href="#" class="nav-link text-uppercase fs-6 active" id="nav-all-tab" data-bs-toggle="tab"
+                  data-bs-target="#nav-all">All</a> -->
+                <!-- <a href="#" class="nav-link text-uppercase fs-6" id="nav-fruits-tab" data-bs-toggle="tab" data-bs-target="#nav-fruits">Fruits</a>
+                    <a href="#" class="nav-link text-uppercase fs-6" id="nav-juices-tab" data-bs-toggle="tab" data-bs-target="#nav-juices">Juices</a> -->
+              </div>
+            </nav>
+          </div>
+          <div class="tab-content" id="nav-tabContent">
+            <div class="tab-pane fade show active" id="nav-all" role="tabpanel" aria-labelledby="nav-all-tab">
+
+              <div class="product-grid row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5">
+                {% for product in my_products %}
+                <div class="col">
+                  <div class="product-item" data-product-id="{{ product.id }}">
+                    {% if user.is_authenticated %}
+                    {% if product.id in wishlist_product_ids %}
+                    <a href="#" class="btn-wishlist" data-product-id="{{ product.id }}"
+                      style="color: #fff;background-color: #dc3545;border-color: #dc3545;">
+                      <svg width="24" height="24">
+                        <use xlink:href="#heart"></use>
+                      </svg>
+                    </a>
+                    {% else %}
+                    <a href="#" class="btn-wishlist" data-product-id="{{ product.id }}">
+                      <svg width="24" height="24">
+                        <use xlink:href="#heart"></use>
+                      </svg>
+                    </a>
+                    {% endif %}
+                    {% endif %}
+                    <figure>
+                      <a href="{{ product.get_absolute_url }}" title="Product Title">
+                        <img src="{{ product.image.url }}" class="tab-image img-fluid rounded">
+                      </a>
+                    </figure>
+                    <h3>{{ product.title | capfirst }}</h3>
+                    <span class="price">${{ product.price }}</span>
+                    <span class="rating">
+                      <svg width="24" height="24" class="text-primary">
+                          <use xlink:href="#star-solid"></use>
+                      </svg> {{product.get_average_rating}}
+                  </span>
+                    <div class="align-item-center justify-content-between">
+                    <div class="d-flex align-items-center justify-content-between">
+                      <div class="input-group product-qty">
+                        <span class="input-group-btn">
+                          <button type="button" class="quantity-left-minus btn btn-danger btn-number" data-type="minus"
+                            data-product-id="{{ product.id }}">
+                            <svg width="16" height="16">
+                              <use xlink:href="#minus"></use>
+                            </svg>
+                          </button>
+                        </span>
+                        <input type="text" id="quantity-{{ product.id }}" name="quantity"
+                          class="form-control input-number" value="1" style="border-color: white;" readonly>
+                        <span class="input-group-btn">
+                          <button type="button" class="quantity-right-plus btn btn-success btn-number" data-type="plus"
+                            data-product-id="{{ product.id }}">
+                            <svg width="16" height="16">
+                              <use xlink:href="#plus"></use>
+                            </svg>
+                          </button>
+                        </span>
+                      </div>
+                      <a href="#" class="nav-link btn-add-to-cart"
+                                    data-product-id="{{ product.id }}">Add to Cart
+                                    <iconify-icon icon="uil:shopping-cart"></iconify-icon>
+                                </a>
+                    </div>
+                  </div>
+                </div>
+                </div>
+                {% endfor %}
+              </div>
+              <!-- / product-grid -->
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+  <section class="py-0">
+    <div class="container-fluid">
+
+      <div class="bg-secondary py-2 rounded-5"
+        style="background: url('media/images/bg-leaves-img-pattern.png') no-repeat;">
+        <div class="container my-0">
+          <div class="row">
+            <div class="col-md-6 p-5">
+              <div class="section-header">
+                <h2 class="section-title display-5">Get <span class="text-primary">25% Discount</span> on your first
+                  purchase</h2>
+              </div>
+              <p>Start your journey with us today and enjoy exclusive savings! Sign up now to receive 25% off your first
+                order. Don't miss this opportunity to experience quality products at unbeatable prices.</p>
+              <a href="{% url 'register' %}"
+                class="btn btn-outline-dark btn-lg text-uppercase fs-6 rounded-1 px-4 py-2 mt-3">Sign Up Now</a>
+            </div>
+
+            <div class="img-wrapper col-md-5 p-1 mt-3">
+              <img src="{% static 'media/images/money3.png' %}" class="img-fluid">
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    </div>
+  </section>
+
+  <section class="py-3">
+    <div class="container-fluid">
+      <div class="row g-3 row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-5">
+        <!-- Card 1 -->
+        <div class="col">
+          <div class="card h-100 border-0 rounded-4 shadow-sm p-3">
+            <div class="d-flex">
+              <div class="flex-shrink-0 text-success me-1">
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M21.5 15a3 3 0 0 0-1.9-2.78l1.87-7a1 1 0 0 0-.18-.87A1 1 0 0 0 20.5 4H6.8l-.33-1.26A1 1 0 0 0 5.5 2h-2v2h1.23l2.48 9.26a1 1 0 0 0 1 .74H18.5a1 1 0 0 1 0 2h-13a1 1 0 0 0 0 2h1.18a3 3 0 1 0 5.64 0h2.36a3 3 0 1 0 5.82 1a2.94 2.94 0 0 0-.4-1.47A3 3 0 0 0 21.5 15Zm-3.91-3H9L7.34 6H19.2ZM9.5 20a1 1 0 1 1 1-1a1 1 0 0 1-1 1Zm8 0a1 1 0 1 1 1-1a1 1 0 0 1-1 1Z"/></svg>
+              </div>
+              <div>
+                <h5 class="mb-1">Delivery</h5>
+                <p class="mb-0 text-muted">Enjoy free delivery on all orders above $50.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+  
+        <!-- Card 2 -->
+        <div class="col">
+          <div class="card h-100 border-0 rounded-4 shadow-sm p-3">
+            <div class="d-flex">
+              <div class="flex-shrink-0 text-success me-1">
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M19.63 3.65a1 1 0 0 0-.84-.2a8 8 0 0 1-6.22-1.27a1 1 0 0 0-1.14 0a8 8 0 0 1-6.22 1.27a1 1 0 0 0-.84.2a1 1 0 0 0-.37.78v7.45a9 9 0 0 0 3.77 7.33l3.65 2.6a1 1 0 0 0 1.16 0l3.65-2.6A9 9 0 0 0 20 11.88V4.43a1 1 0 0 0-.37-.78ZM18 11.88a7 7 0 0 1-2.93 5.7L12 19.77l-3.07-2.19A7 7 0 0 1 6 11.88v-6.3a10 10 0 0 0 6-1.39a10 10 0 0 0 6 1.39Zm-4.46-2.29l-2.69 2.7l-.89-.9a1 1 0 0 0-1.42 1.42l1.6 1.6a1 1 0 0 0 1.42 0L15 11a1 1 0 0 0-1.42-1.42Z"/></svg>
+              </div>
+              <div>
+                <h5 class="mb-1">Payment</h5>
+                <p class="mb-0 text-muted">Your payment information is safe with us.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+  
+        <!-- Card 3 -->
+        <div class="col">
+          <div class="card h-100 border-0 rounded-4 shadow-sm p-3">
+            <div class="d-flex">
+              <div class="flex-shrink-0 text-success me-1">
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M22 5H2a1 1 0 0 0-1 1v4a3 3 0 0 0 2 2.82V22a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1v-9.18A3 3 0 0 0 23 10V6a1 1 0 0 0-1-1Zm-7 2h2v3a1 1 0 0 1-2 0Zm-4 0h2v3a1 1 0 0 1-2 0ZM7 7h2v3a1 1 0 0 1-2 0Zm-3 4a1 1 0 0 1-1-1V7h2v3a1 1 0 0 1-1 1Zm10 10h-4v-2a2 2 0 0 1 4 0Zm5 0h-3v-2a4 4 0 0 0-8 0v2H5v-8.18a3.17 3.17 0 0 0 1-.6a3 3 0 0 0 4 0a3 3 0 0 0 4 0a3 3 0 0 0 4 0a3.17 3.17 0 0 0 1 .6Zm2-11a1 1 0 0 1-2 0V7h2ZM4.3 3H20a1 1 0 0 0 0-2H4.3a1 1 0 0 0 0 2Z"/></svg>
+              </div>
+              <div>
+                <h5 class="mb-1">Quality</h5>
+                <p class="mb-0 text-muted">We stand behind the quality of our products.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+  
+        <!-- Card 4 -->
+        <div class="col">
+          <div class="card h-100 border-0 rounded-4 shadow-sm p-3">
+            <div class="d-flex">
+              <div class="flex-shrink-0 text-success me-1">
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M12 8.35a3.07 3.07 0 0 0-3.54.53a3 3 0 0 0 0 4.24L11.29 16a1 1 0 0 0 1.42 0l2.83-2.83a3 3 0 0 0 0-4.24A3.07 3.07 0 0 0 12 8.35Zm2.12 3.36L12 13.83l-2.12-2.12a1 1 0 0 1 0-1.42a1 1 0 0 1 1.41 0a1 1 0 0 0 1.42 0a1 1 0 0 1 1.41 0a1 1 0 0 1 0 1.42ZM12 2A10 10 0 0 0 2 12a9.89 9.89 0 0 0 2.26 6.33l-2 2a1 1 0 0 0-.21 1.09A1 1 0 0 0 3 22h9a10 10 0 0 0 0-20Zm0 18H5.41l.93-.93a1 1 0 0 0 0-1.41A8 8 0 1 1 12 20Z"/></svg>
+              </div>
+              <div>
+                <h5 class="mb-1">Savings</h5>
+                <p class="mb-0 text-muted">Get the best deals and save more with us.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+  
+        <!-- Card 5 -->
+        <div class="col">
+          <div class="card h-100 border-0 rounded-4 shadow-sm p-3">
+            <div class="d-flex">
+              <div class="flex-shrink-0 text-success me-1">
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M18 7h-.35A3.45 3.45 0 0 0 18 5.5a3.49 3.49 0 0 0-6-2.44A3.49 3.49 0 0 0 6 5.5A3.45 3.45 0 0 0 6.35 7H6a3 3 0 0 0-3 3v2a1 1 0 0 0 1 1h1v6a3 3 0 0 0 3 3h8a3 3 0 0 0 3-3v-6h1a1 1 0 0 0 1-1v-2a3 3 0 0 0-3-3Zm-7 13H8a1 1 0 0 1-1-1v-6h4Zm0-9H5v-1a1 1 0 0 1 1-1h5Zm0-4H9.5A1.5 1.5 0 1 1 11 5.5Zm2-1.5A1.5 1.5 0 1 1 14.5 7H13ZM17 19a1 1 0 0 1-1 1h-3v-7h4Zm2-8h-6V9h5a1 1 0 0 1 1 1Z"/></svg>
+              </div>
+              <div>
+                <h5 class="mb-1">Security</h5>
+                <p class="mb-0 text-muted">Shop with confidence with our secure systems.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+
+  <script>
+   // On Add to Cart button click
+//$(document).on('click', '.btn-add-to-cart', function (e) {
+//  e.preventDefault();
+//  const productId = $(this).data('product-id');
+//  const quantity = $(`#quantity-${productId}`).val();
+//
+//  // Show loader
+//  $('#loader').fadeIn();
+//
+//  $.ajax({
+//      type: 'POST',
+//      url: '{% url "cart-add" %}',
+//      data: {
+//          product_id: productId,
+//          product_quantity: quantity,
+//          csrfmiddlewaretoken: '{{ csrf_token }}',
+//          action: 'post'
+//      },
+//      success: function (json) {
+//          $('#cart-qty').text(json.qty);
+//
+//          // Set a flag in localStorage to open the off-canvas cart
+//          localStorage.setItem('openCart', 'true');
+//
+//          // Reload the page
+//          location.reload();
+//      },
+//      error: function (xhr, errmsg, err) {
+//          console.error(xhr.status + ": " + xhr.responseText);
+//
+//          // Hide loader in case of error
+//          $('#loader').fadeOut();
+//      }
+//  });
+//});
+//
+//// On Page Load
+//$(document).ready(function () {
+//  // Check if the flag is set to open the cart
+//  if (localStorage.getItem('openCart') === 'true') {
+//      // Remove the flag
+//      localStorage.removeItem('openCart');
+//
+//      // Open the off-canvas cart
+//      const offCanvasCart = new bootstrap.Offcanvas($('#offcanvasCart')[0]);
+//      offCanvasCart.show();
+//  }
+//});
+
+$(document).on('click', '.btn-add-to-cart', function (e) {
+  e.preventDefault();
+  const productId = $(this).data('product-id');
+  const quantity = $(`#quantity-${productId}`).val();
+
+  // Show loader
+  $('#loader').fadeIn();
+
+  $.ajax({
+      type: 'POST',
+      url: '{% url "cart-add" %}', 
+      data: {
+          product_id: productId,
+          product_quantity: quantity,
+          csrfmiddlewaretoken: '{{ csrf_token }}',
+          action: 'post'
+      },
+      success: function (json) {
+          $('#cart-qty').text(json.qty);
+
+          // Fetch updated cart content
+          $.ajax({
+              type: 'GET',
+              url: '{% url "cart-partial" %}', // URL to fetch the updated cart HTML
+              success: function (html) {
+                  // Replace the off-canvas cart content
+                  $('#offcanvasCart .offcanvas-body').html(html);
+                  const offCanvasCart = new bootstrap.Offcanvas($('#offcanvasCart')[0]);
+                  offCanvasCart.show();
+
+                  // Hide loader
+                  $('#loader').fadeOut();
+              },
+              error: function (xhr, errmsg, err) {
+                  console.error(xhr.status + ": " + xhr.responseText);
+                  $('#loader').fadeOut();
+              }
+          });
+      },
+      error: function (xhr, errmsg, err) {
+          console.error(xhr.status + ": " + xhr.responseText);
+
+          // Hide loader in case of error
+          $('#loader').fadeOut();
+      }
+  });
+});
+
+    $(document).on('click', '.btn-wishlist', function (e) {
+      e.preventDefault();
+      const productId = $(this).data('product-id');
+      const button = $(this);
+
+      $.ajax({
+        type: 'POST',
+        url: '{% url "toggle-wishlist" %}',
+        data: {
+          product_id: productId,
+          csrfmiddlewaretoken: '{{ csrf_token }}'
+        },
+        success: function (response) {
+          if (response.added) {
+            button.css({
+              'color': '#fff',
+              'background-color': '#dc3545',
+              'border-color': '#dc3545'
+            });
+          } else {
+            button.css({
+              'color': '#000000',
+              'background-color': '#fff',
+              'border-color': '#d8d8d8'
+            });
+          }
+        },
+        error: function (xhr, errmsg, err) {
+          console.log(xhr.status + ": " + xhr.responseText);
+        }
+      });
+    });
+
+
+    $(document).on('click', '.quantity-left-minus', function (e) {
+      e.preventDefault();
+      const productId = $(this).data('product-id');
+      const quantityInput = $(`#quantity-${productId}`);
+      let currentQuantity = parseInt(quantityInput.val());
+
+      if (!isNaN(currentQuantity) && currentQuantity > 1) {
+        quantityInput.val(currentQuantity - 1);
+      } else {
+        alert("Quantity must be at least 1.");
+      }
+    });
+
+    $(document).on('click', '.quantity-right-plus', function (e) {
+      e.preventDefault();
+      const productId = $(this).data('product-id');
+      const quantityInput = $(`#quantity-${productId}`);
+      let currentQuantity = parseInt(quantityInput.val());
+
+      if (!isNaN(currentQuantity)) {
+          if (currentQuantity<50){
+              quantityInput.val(currentQuantity + 1);
+          } else {
+              alert("Maximum quantity allowed is 50.");
+          }
+          
+      } else {
+          alert("Invalid quantity value.");
+      }
+  });
+
+    
+
+  </script>
+
+
+  {% endblock %}

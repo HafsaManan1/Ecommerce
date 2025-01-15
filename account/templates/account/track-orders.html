@@ -1,0 +1,55 @@
+{% extends "store/base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% load mathfilters %}
+
+{% block content %}
+<section class="bg-light py-5">
+    <!-- <div class="container p-5 rounded shadow-lg bg-white"> -->
+    <div class="container p-5 rounded bg-white">
+        <div class="d-flex align-items-center mb-4">
+            <a href="{% url 'dashboard' %}" class="text-primary me-3 fs-5">
+                <i class="fa-solid fa-arrow-left"></i>
+            </a>
+            <h2 class="mb-0 flex-grow-1 text-center text-primary">
+                <i class="fa fa-list-alt me-2" aria-hidden="true"></i>Your Orders History
+            </h2>
+        </div>
+
+        {% if orders %}
+            <div class="accordion" id="ordersAccordion">
+                {% for order in orders %}
+                    <div class="accordion-item border-0 mb-3 shadow-sm">
+                        <h2 class="accordion-header" id="heading{{ forloop.counter }}">
+                            <button class="accordion-button collapsed bg-primary text-white rounded-top" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ forloop.counter }}" aria-expanded="false" aria-controls="collapse{{ forloop.counter }}">
+                                Order ID #{{ order.id }} - ${{ order.amount_paid }}
+                            </button>
+                        </h2>
+                        <div id="collapse{{ forloop.counter }}" class="accordion-collapse collapse" aria-labelledby="heading{{ forloop.counter }}" data-bs-parent="#ordersAccordion">
+                            <div class="accordion-body bg-light">
+                                <p class="mb-2"><strong>Order Date:</strong> {{ order.date_order }}</p>
+                                <p class="mb-2"><strong>Total Amount Paid:</strong> ${{ order.amount_paid }}</p>
+                                <hr>
+                                <h6 class="mb-3">Items in Order:</h6>
+                                {% for item in order.orderitem_set.all %}
+                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                        <div>
+                                            <p class="mb-1"><strong>Product:</strong> {{ item.product }}</p>
+                                            <p class="mb-1"><strong>Quantity:</strong> x{{ item.quantity }}</p>
+                                            <p class="mb-1"><strong>Price (each):</strong> ${{ item.price }}</p>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="alert alert-info text-center p-4">
+                <i class="fa fa-info-circle me-2" aria-hidden="true"></i>No orders found!
+            </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

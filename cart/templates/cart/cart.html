@@ -1,0 +1,27 @@
+{% load mathfilters %}
+<div class="order-md-last">
+    <h4 class="d-flex justify-content-between align-items-center mb-3">
+        <span class="text-primary">Your cart</span>
+        <span class="badge bg-primary rounded-pill">{{ cart|length }}</span>
+    </h4>
+    <ul class="list-group mb-3">
+        {% for item in cart %}
+        {% with product=item.product %}
+        <li class="list-group-item d-flex justify-content-between align-items-center lh-sm">
+            <div class="d-flex flex-column">
+                <h6 class="my-0">{{ product.title }} x {{item.quantity}}</h6>
+            </div>
+            <div class="d-flex flex-column align-items-end">
+                <span class="text-body-secondary">${{ product.price|mul:item.quantity }}</span>
+            </div>
+        </li>
+        {% endwith %}
+        {% endfor %}
+        <li class="list-group-item d-flex justify-content-between">
+            <span>Total (USD)</span>
+            <strong>${{ cart.get_total }}</strong>
+        </li>
+    </ul>
+
+    <a href="{% url 'cart-summary' %}" class="w-100 btn btn-primary btn-lg">Complete Order</a>
+</div>

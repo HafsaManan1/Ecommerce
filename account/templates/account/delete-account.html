@@ -1,0 +1,49 @@
+{% extends "store/base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<section class="bg-light py-5">
+    <div class="container bg-white rounded shadow-sm p-5">
+        <div class="d-flex align-items-center mb-4">
+            <a href="{% url 'dashboard' %}" class="text-primary me-3 fs-5">
+                <i class="fa-solid fa-arrow-left"></i>
+            </a>
+            <h2 class="mb-0 flex-grow-1 text-center text-primary">
+                <i class="fa fa-user-times" aria-hidden="true"></i> Delete Your Account
+            </h2>
+        </div> 
+        <p class="text-center">Are you sure you want to delete your account?</p>
+        <div class="text-center mt-4">
+            <!-- Trigger Modal -->
+            <button type="button" class="btn b btn-lg " data-bs-toggle="modal" data-bs-target="#deleteAccountModal" style="background-color: red; color:#fff">
+                Delete Account
+            </button>
+        </div>
+    </div>
+</section>
+
+<!-- Confirmation Modal -->
+<div class="modal fade" id="deleteAccountModal" tabindex="-1" aria-labelledby="deleteAccountModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteAccountModalLabel">Confirm Account Deletion</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Are you absolutely sure you want to delete your account? This action cannot be undone.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <!-- Form for deletion -->
+                <form method="POST" action="{% url 'delete-account' %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn" style="background-color: red; color:#fff">Confirm Delete</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

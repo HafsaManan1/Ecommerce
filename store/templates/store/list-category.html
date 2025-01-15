@@ -1,0 +1,226 @@
+{% extends "./base.html" %}
+{% load static %}
+
+{% block content %}
+
+<section>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="bootstrap-tabs product-tabs">
+                    <div class="tabs-header d-flex justify-content-between my-2">
+           <h3> {{ category.name | capfirst }}</h3>
+        </div>
+        <div class="tab-content">
+            {% if products %}
+            <div
+            class="product-grid row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5">
+                {% for product in products %}
+                    <div class="col">
+                        <div class="product-item" data-product-id="{{ product.id }}">
+                            {% if user.is_authenticated %}
+                            {% if product.id in wishlist_product_ids %}
+                            <a href="#" class="btn-wishlist" data-product-id="{{ product.id }}" style="color: #fff;background-color: #dc3545;border-color: #dc3545;">
+                                <svg width="24" height="24"><use xlink:href="#heart"></use></svg>
+                            </a>
+                            {% else %}
+                            <a href="#" class="btn-wishlist" data-product-id="{{ product.id }}">
+                              <svg width="24" height="24"><use xlink:href="#heart"></use></svg>
+                          </a>
+                            {% endif %}
+                            {% endif %}
+                            <figure>
+                                <a href="{{ product.get_absolute_url }}" title="{{ product.title }}">
+                                    <img src="{{ product.image.url }}" class="tab-image img-fluid rounded">
+                                </a>
+                            </figure>
+                            <h3>{{ product.title | capfirst }}</h3>
+                            <span class="rating">
+                                <svg width="24" height="24" class="text-primary">
+                                    <use xlink:href="#star-solid"></use>
+                                </svg> {{product.get_average_rating}}
+                            </span>
+                            <span class="price">${{ product.price }}</span>
+                            <div class="d-flex align-items-center justify-content-between">
+                                <div class="input-group product-qty">
+                                    <span class="input-group-btn">
+                                        <button type="button"
+                                            class="quantity-left-minus btn btn-danger btn-number"
+                                            data-type="minus" data-product-id="{{ product.id }}">
+                                            <svg width="16" height="16">
+                                                <use xlink:href="#minus"></use>
+                                            </svg>
+                                        </button>
+                                    </span>
+                                    <input type="text" id="quantity-{{ product.id }}" name="quantity"
+                                        class="form-control input-number" value="1"
+                                        style="border-color: white;" readonly>
+                                    <span class="input-group-btn">
+                                        <button type="button"
+                                            class="quantity-right-plus btn btn-success btn-number"
+                                            data-type="plus" data-product-id="{{ product.id }}">
+                                            <svg width="16" height="16">
+                                                <use xlink:href="#plus"></use>
+                                            </svg>
+                                        </button>
+                                    </span>
+                                </div>
+                                <a href="#" class="nav-link btn-add-to-cart"
+                                    data-product-id="{{ product.id }}">Add to Cart
+                                    <iconify-icon icon="uil:shopping-cart"></iconify-icon>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <div class="col">
+                    <div class="alert alert-info text-center">
+                        <i class="fa fa-info-circle" aria-hidden="true"></i> No products available in this category!
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+</section>
+
+<script>
+//    $(document).on('click', '.btn-add-to-cart', function (e) {
+//        e.preventDefault();
+//        const productId = $(this).data('product-id');
+//        const quantity = $(`#quantity-${productId}`).val();
+//
+//        $.ajax({
+//            type: 'POST',
+//            url: '{% url "cart-add" %}',
+//            data: {
+//                product_id: productId,
+//                product_quantity: quantity,
+//                csrfmiddlewaretoken: '{{ csrf_token }}',
+//                action: 'post'
+//            },
+//            success: function (json) {
+//                $('#cart-qty').text(json.qty);
+//            },
+//            error: function (xhr, errmsg, err) {
+//                console.log(xhr.status + ": " + xhr.responseText);
+//            }
+//        });
+//    });
+//
+$(document).on('click', '.btn-add-to-cart', function (e) {
+    e.preventDefault();
+    const productId = $(this).data('product-id');
+    const quantity = $(`#quantity-${productId}`).val();
+  
+    // Show loader
+    $('#loader').fadeIn();
+  
+    $.ajax({
+        type: 'POST',
+        url: '{% url "cart-add" %}', // Your add-to-cart URL
+        data: {
+            product_id: productId,
+            product_quantity: quantity,
+            csrfmiddlewaretoken: '{{ csrf_token }}',
+            action: 'post'
+        },
+        success: function (json) {
+            $('#cart-qty').text(json.qty); // Update cart quantity indicator
+  
+            // Fetch updated cart content
+            $.ajax({
+                type: 'GET',
+                url: '{% url "cart-partial" %}', // URL to fetch the updated cart HTML
+                success: function (html) {
+                    // Replace the off-canvas cart content
+                    $('#offcanvasCart .offcanvas-body').html(html);
+                    const offCanvasCart = new bootstrap.Offcanvas($('#offcanvasCart')[0]);
+                    offCanvasCart.show();
+  
+                    // Hide loader
+                    $('#loader').fadeOut();
+                },
+                error: function (xhr, errmsg, err) {
+                    console.error(xhr.status + ": " + xhr.responseText);
+                    $('#loader').fadeOut();
+                }
+            });
+        },
+        error: function (xhr, errmsg, err) {
+            console.error(xhr.status + ": " + xhr.responseText);
+  
+            // Hide loader in case of error
+            $('#loader').fadeOut();
+        }
+    });
+  });
+
+    $(document).on('click', '.btn-wishlist', function(e) {
+        e.preventDefault();
+        const productId = $(this).data('product-id');
+        const button = $(this);
+
+        $.ajax({
+            type: 'POST',
+            url: '{% url "toggle-wishlist" %}',
+            data: {
+                product_id: productId,
+                csrfmiddlewaretoken: '{{ csrf_token }}'
+            },
+            success: function(response) {
+              if (response.added) {
+                  button.css({
+                      'color': '#fff',
+                      'background-color': '#dc3545',
+                      'border-color': '#dc3545'
+                  });
+              } else {
+                  button.css({
+                      'color': '#000000',
+                      'background-color': '#fff',
+                      'border-color': '#d8d8d8'
+                  });
+              }
+          },
+            error: function(xhr, errmsg, err) {
+                console.log(xhr.status + ": " + xhr.responseText);
+            }
+        });
+    });
+
+    $(document).on('click', '.quantity-left-minus', function (e) {
+        e.preventDefault();
+        const productId = $(this).data('product-id');
+        const quantityInput = $(`#quantity-${productId}`);
+        let currentQuantity = parseInt(quantityInput.val());
+
+        if (!isNaN(currentQuantity) && currentQuantity > 1) {
+            quantityInput.val(currentQuantity - 1);
+        } else {
+            alert("Quantity must be at least 1.");
+        }
+    });
+
+    $(document).on('click', '.quantity-right-plus', function (e) {
+        e.preventDefault();
+        const productId = $(this).data('product-id');
+        const quantityInput = $(`#quantity-${productId}`);
+        let currentQuantity = parseInt(quantityInput.val());
+
+        if (!isNaN(currentQuantity)) {
+            if (currentQuantity<50){
+                quantityInput.val(currentQuantity + 1);
+            } else {
+                alert("Maximum quantity allowed is 50.");
+            }
+            
+        } else {
+            alert("Invalid quantity value.");
+        }
+    });
+</script>
+
+{% endblock %}

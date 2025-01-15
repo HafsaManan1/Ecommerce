@@ -1,0 +1,195 @@
+{% extends "./base.html" %}
+{% load static %}
+
+{% block content %}
+<section class="py-5 bg-light">
+    <div class="container-fluid">
+
+        <div class="row">
+            <div class="col-md-12">
+
+                <div class="bootstrap-tabs product-tabs">
+                    <div class="tab-content" id="nav-tabContent">
+                        <div class="tab-pane fade show active" id="nav-all" role="tabpanel"
+                            aria-labelledby="nav-all-tab">
+                            <h2 class="text-center mb-5 text-primary">
+                                <i class="fa fa-heart" aria-hidden="true"></i> Your Wishlist
+                            </h2>
+
+                            <div
+                                class="product-grid row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5">
+                                {% if wishlist_items %}
+                                {% for item in wishlist_items %}
+                                <div class="col">
+                                    <div class="product-item">
+                                        <figure>
+                                            <a href="{{ item.product.get_absolute_url }}"
+                                                title="{{ item.product.title }}">
+                                                <img src="{{ item.product.image.url }}"
+                                                    class="tab-image img-fluid rounded"
+                                                    style="height: 200px; object-fit: cover;">
+                                            </a>
+                                        </figure>
+                                        <h3>{{ item.product.title | capfirst }}</h3>
+                                        <span class="qty">1 Unit</span>
+                                        <span class="rating">
+                                            <svg width="24" height="24" class="text-primary">
+                                                <use xlink:href="#star-solid"></use>
+                                            </svg>
+                                            4.5
+                                        </span>
+                                        <span class="price">${{ item.product.price }}</span>
+
+                                        <div class="d-flex align-items-center justify-content-between">
+                                            <div class="input-group product-qty">
+                                                <span class="input-group-btn">
+                                                    <button type="button"
+                                                        class="quantity-left-minus btn btn-danger btn-number"
+                                                        data-type="minus" data-product-id="{{ item.product.id }}">
+                                                        <svg width="16" height="16">
+                                                            <use xlink:href="#minus"></use>
+                                                        </svg>
+                                                    </button>
+                                                </span>
+                                                <input type="text" id="quantity-{{ item.product.id }}" name="quantity"
+                                                    class="form-control input-number" value="1"
+                                                    style="border-color: white;"readonly>
+                                                <span class="input-group-btn">
+                                                    <button type="button"
+                                                        class="quantity-right-plus btn btn-success btn-number"
+                                                        data-type="plus" data-product-id="{{ item.product.id }}">
+                                                        <svg width="16" height="16">
+                                                            <use xlink:href="#plus"></use>
+                                                        </svg>
+                                                    </button>
+                                                </span>
+                                            </div>
+                                            <a href="#" class="nav-link btn-add-to-cart"
+                                                data-product-id="{{ item.product.id }}">Add to Cart
+                                                <iconify-icon icon="uil:shopping-cart"></iconify-icon>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+
+                                {% else %}
+                                <div class="col-12">
+                                    <div class="alert alert-info text-center">
+                                        <i class="fa fa-info-circle" aria-hidden="true"></i> Your wishlist is empty!
+                                    </div>
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script>
+//    $(document).on('click', '.btn-add-to-cart', function (e) {
+//        e.preventDefault();
+//        const productId = $(this).data('product-id');
+//        const quantity = $(`#quantity-${productId}`).val();
+//
+//        $.ajax({
+//            type: 'POST',
+//            url: '{% url "cart-add" %}',
+//            data: {
+//                product_id: productId,
+//                product_quantity: quantity,
+//                csrfmiddlewaretoken: '{{ csrf_token }}',
+//                action: 'post'
+//            },
+//            success: function (json) {
+//                $('#cart-qty').text(json.qty);
+//            },
+//            error: function (xhr, errmsg, err) {
+//                console.log(xhr.status + ": " + xhr.responseText);
+//            }
+//        });
+//    });
+$(document).on('click', '.btn-add-to-cart', function (e) {
+    e.preventDefault();
+    const productId = $(this).data('product-id');
+    const quantity = $(`#quantity-${productId}`).val();
+  
+    // Show loader
+    $('#loader').fadeIn();
+  
+    $.ajax({
+        type: 'POST',
+        url: '{% url "cart-add" %}', 
+        data: {
+            product_id: productId,
+            product_quantity: quantity,
+            csrfmiddlewaretoken: '{{ csrf_token }}',
+            action: 'post'
+        },
+        success: function (json) {
+            $('#cart-qty').text(json.qty);
+  
+            // Fetch updated cart content
+            $.ajax({
+                type: 'GET',
+                url: '{% url "cart-partial" %}', // URL to fetch the updated cart HTML
+                success: function (html) {
+                    // Replace the off-canvas cart content
+                    $('#offcanvasCart .offcanvas-body').html(html);
+                    const offCanvasCart = new bootstrap.Offcanvas($('#offcanvasCart')[0]);
+                    offCanvasCart.show();
+  
+                    // Hide loader
+                    $('#loader').fadeOut();
+                },
+                error: function (xhr, errmsg, err) {
+                    console.error(xhr.status + ": " + xhr.responseText);
+                    $('#loader').fadeOut();
+                }
+            });
+        },
+        error: function (xhr, errmsg, err) {
+            console.error(xhr.status + ": " + xhr.responseText);
+  
+            // Hide loader in case of error
+            $('#loader').fadeOut();
+        }
+    });
+  });
+  
+
+    $(document).on('click', '.quantity-left-minus', function (e) {
+        e.preventDefault();
+        const productId = $(this).data('product-id');
+        const quantityInput = $(`#quantity-${productId}`);
+        let currentQuantity = parseInt(quantityInput.val());
+
+        if (!isNaN(currentQuantity) && currentQuantity > 1) {
+            quantityInput.val(currentQuantity - 1);
+        } else {
+            alert("Quantity must be at least 1.");
+        }
+    });
+
+    $(document).on('click', '.quantity-right-plus', function (e) {
+        e.preventDefault();
+        const productId = $(this).data('product-id');
+        const quantityInput = $(`#quantity-${productId}`);
+        let currentQuantity = parseInt(quantityInput.val());
+
+        if (!isNaN(currentQuantity)) {
+            if (currentQuantity<50){
+                quantityInput.val(currentQuantity + 1);
+            } else {
+                alert("Maximum quantity allowed is 50.");
+            }
+            
+        } else {
+            alert("Invalid quantity value.");
+        }
+    });
+
+</script>
+{% endblock %}

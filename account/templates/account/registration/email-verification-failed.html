@@ -1,0 +1,16 @@
+{% extends "store/base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container d-flex justify-content-center align-items-center min-vh-100" style="font-size: 14px;">
+    <div class="w-100" style="max-width: 350px;">
+        <div class="card p-4">
+            <a class="navbar-brand main-heading text-center" href="{% url 'store' %}">
+                &nbsp; &nbsp; <img src="{% static 'media/images/logo.png' %}" alt="Logo">
+            </a>
+                    Your account is not verified!
+                    Please verify your email to access all features of your account.
+                </div>
+            </div>
+        </div>
+{% endblock %}

@@ -1,0 +1,78 @@
+{% extends "./base.html" %}
+{% load static %}
+
+{% block content %}
+
+<section class="bg-light py-5">
+    <div class="container p-4 rounded shadow-sm bg-white">
+        <h2 class="text-center mb-5 text-primary">About Us</h2>
+
+        <div class="row align-items-center mb-5">
+            <div class="col-md-6">
+                <h3 class="text-primary">Who We Are</h3>
+                <p class="text-muted">
+                    Welcome to <strong>FoodMart</strong>, your trusted online grocery store! We are committed to bringing you the freshest produce, pantry essentials, and household items—all delivered straight to your doorstep. 
+                </p>
+                <p class="text-muted">
+                    At FoodMart, we prioritize quality and customer satisfaction. Our mission is to make your grocery shopping convenient, affordable, and stress-free.
+                </p>
+            </div>
+            <div class="col-md-6">
+                <img src="{% static 'media/images/quality.jpg' %}" alt="About Us" class="img-fluid rounded" style="object-fit: cover; height: 300px; width: 100%;">
+            </div>
+        </div>
+
+        <div class="row align-items-center mb-5">
+            <div class="col-md-6 order-md-2">
+                <h3 class="text-primary">Our Values</h3>
+                <ul class="list-unstyled text-muted">
+                    <li class="mb-2">
+                        <i class="fa fa-check-circle text-success"></i> Freshness Guaranteed: We source our products daily from trusted suppliers.
+                    </li>
+                    <li class="mb-2">
+                        <i class="fa fa-check-circle text-success"></i> Customer-Centric: Your satisfaction is our top priority.
+                    </li>
+                    <li class="mb-2">
+                        <i class="fa fa-check-circle text-success"></i> Sustainability: We aim to minimize waste and support eco-friendly practices.
+                    </li>
+                </ul>
+            </div>
+            <div class="col-md-6 order-md-1">
+                <img src="{% static 'media/images/about-us2.png' %}" alt="Our Values" class="img-fluid rounded" style="object-fit: cover; height: 300px; width: 100%;">
+            </div>
+        </div>
+
+        <div class="row align-items-center">
+            <div class="col-md-6">
+                <h3 class="text-primary">Why Shop With Us?</h3>
+                <p class="text-muted">
+                    FoodMart is more than just a grocery store. Here's why our customers love us:
+                </p>
+                <ul class="list-unstyled text-muted">
+                    <li class="mb-2">
+                        <i class="fa fa-shopping-cart text-primary"></i> Convenient online shopping from the comfort of your home.
+                    </li>
+                    <li class="mb-2">
+                        <i class="fa fa-truck text-primary"></i> Fast and reliable delivery services.
+                    </li>
+                    <li class="mb-2">
+                        <i class="fa fa-tags text-primary"></i> Competitive pricing with frequent discounts and deals.
+                    </li>
+                </ul>
+            </div>
+            <div class="col-md-6">
+                <img src="{% static 'media/images/shop.png' %}" alt="Why Shop With Us" class="img-fluid rounded" style="object-fit: cover; height: 300px; width: 100%;">
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="bg-primary text-white py-5">
+    <div class="container text-center">
+        <h3>Ready to Experience the FoodhMart Difference?</h3>
+        <p>Your one-stop destination for fresh, affordable, and convenient grocery shopping!</p>
+        <a href="{% url 'store' %}" class="btn btn-dark mt-3">Shop Now</a>
+    </div>
+</section>
+
+{% endblock %}

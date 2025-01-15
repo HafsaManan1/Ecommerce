@@ -1,0 +1,107 @@
+{% extends "./base.html" %}
+{% load static %}
+
+{% block content %}
+<section class="bg-light py-5">
+    <div class="container p-4 rounded shadow-sm bg-white">
+        <h2 class="text-center mb-5 text-primary">Delivery Information</h2>
+        <p class="text-muted">
+            At Freshmart, we are committed to delivering your groceries promptly and in perfect condition. Below, you'll find all the details about our delivery process, timelines, and charges.
+        </p>
+
+        <div class="mt-4">
+            <h4 class="text-primary">1. Delivery Areas</h4>
+            <p class="text-muted">
+                We currently deliver to the following regions:
+            </p>
+            <ul class="list-unstyled text-muted">
+                <li class="mb-2">
+                    <i class="fa fa-check text-primary me-2"></i> Surrounding areas.
+                </li>
+                <li class="mb-2">
+                    <i class="fa fa-check text-primary me-2"></i> Urban suburbs within a 20-mile radius of Freshmart.
+                </li>
+            </ul>
+        </div>
+
+        <div class="mt-4">
+            <h4 class="text-primary">2. Delivery Charges</h4>
+            <p class="text-muted">
+                Our delivery charges are based on your order value and location:
+            </p>
+            <table class="table table-bordered text-muted">
+                <thead class="table-primary text-dark">
+                    <tr>
+                        <th>Order Value</th>
+                        <th>Delivery Charge</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Orders above $50</td>
+                        <td>Free</td>
+                    </tr>
+                    <tr>
+                        <td>Orders between $20 and $50</td>
+                        <td>$5</td>
+                    </tr>
+                    <tr>
+                        <td>Orders below $20</td>
+                        <td>$10</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="mt-4">
+            <h4 class="text-primary">3. Delivery Timelines</h4>
+            <p class="text-muted">
+                We aim to deliver your order within the following timeframes:
+            </p>
+            <ul class="list-unstyled text-muted">
+                <li class="mb-2">
+                    <i class="fa fa-clock text-primary me-2"></i> Same-Day Delivery: For orders placed before 12:00 PM.
+                </li>
+                <li class="mb-2">
+                    <i class="fa fa-clock text-primary me-2"></i> Next-Day Delivery: For orders placed after 12:00 PM.
+                </li>
+            </ul>
+        </div>
+
+        <div class="mt-4">
+            <h4 class="text-primary">4. Delivery Policy</h4>
+            <p class="text-muted">
+                To ensure smooth delivery, please:
+            </p>
+            <ul class="list-unstyled text-muted">
+                <li class="mb-2">
+                    <i class="fa fa-map-marker text-primary me-2"></i> Provide an accurate delivery address and contact information.
+                </li>
+                <li class="mb-2">
+                    <i class="fa fa-calendar text-primary me-2"></i> Be available to receive your order during the selected delivery slot.
+                </li>
+                <li class="mb-2">
+                    <i class="fa fa-box-open text-primary me-2"></i> Inspect your groceries upon delivery and report any issues within 24 hours.
+                </li>
+            </ul>
+        </div>
+
+        <div class="mt-4">
+            <h4 class="text-primary">5. Contact Us</h4>
+            <p class="text-muted">
+                Have questions about your delivery? Reach out to our support team:
+            </p>
+            <ul class="list-unstyled text-muted">
+                <li class="mb-2">
+                    <i class="fa fa-envelope text-primary me-2"></i>
+                    Email: <a href="mailto:support@freshmart.com" class="text-primary">support@foodmart.com</a>
+                </li>
+                <li class="mb-2">
+                    <i class="fa fa-phone text-primary me-2"></i>
+                    Phone: <a href="tel:+18005551234" class="text-primary">+1-800-555-1234</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</section>
+{% endblock %}

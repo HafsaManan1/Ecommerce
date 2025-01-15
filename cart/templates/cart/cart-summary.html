@@ -1,0 +1,158 @@
+{% extends "store/base.html" %}
+
+{% load static %}
+{% load mathfilters %}
+
+{% block content %}
+<section class="bg-light py-5">
+    <div class="container">
+        <h2 class="text-center mb-5 text-primary">
+            <i class="fa fa-shopping-cart" aria-hidden="true"></i> Your Cart</h2>
+        {% for item in cart %}
+        {% with product=item.product %}
+        <div class="row mb-4 border p-3 bg-white rounded shadow-sm product-item">
+            <!-- Product Image -->
+            <div class="col-md-3 col-lg-2">
+                <img class="img-fluid mx-auto d-block" alt="Product Image" src="{{ product.image.url }}">
+            </div>
+
+            <!-- Product Details -->
+            <div class="col-md-9 col-lg-10">
+                <a href="{{ product.get_absolute_url }}" class="text-info text-decoration-none">
+                    <h5>{{ product.title }}</h5>
+                </a>
+                <div class="border rounded">
+                    <!-- Product Price -->
+                    <div class="row p-3 border-bottom">
+                        <div class="col-6">Product</div>
+                        <div class="col-6 text-end">
+                            <span class="h6 fw-bold">$ {{ product.price | mul:item.quantity }}</span>
+                        </div>
+                    </div>
+
+                    <!-- Quantity and Actions -->
+                    <div class="row p-3">
+                        <div class="col-12">
+                            <div class="input-group product-qty">
+                                <span class="input-group-btn">
+                                    <button type="button" class="quantity-left-minus btn btn-danger btn-number" data-type="minus" data-product-id="{{ product.id }}">
+                                        <svg width="16" height="16"><use xlink:href="#minus"></use></svg>
+                                    </button>
+                                </span>
+                                <input type="text" id="quantity-{{ product.id }}" name="quantity" class="form-control input-number" value="{{item.quantity}}" style="border-color: white;">
+                                <span class="input-group-btn">
+                                    <button type="button" class="quantity-right-plus btn btn-success btn-number" data-type="plus" data-product-id="{{ product.id }}">
+                                        <svg width="16" height="16"><use xlink:href="#plus"></use></svg>
+                                    </button>
+                                </span>
+                            </div>
+                            <div class="mt-3">
+                                <button type="button" data-index="{{ product.id }}" class="btn btn-primary btn-sm me-2 update-button">Update</button>
+                                <button type="button" data-index="{{ product.id }}" class="btn btn-danger btn-sm delete-button">Delete</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endwith %}
+        {% endfor %}
+
+        <!-- Subtotal and Checkout -->
+        <div class="text-end mt-4">
+            <h6 class="fw-bold">Subtotal: $ <span id="total">{{ cart.get_total }}</span></h6>
+            <a href="{% url 'checkout' %}" class="btn btn-primary btn-lg mt-2">Proceed to Checkout</a>
+        </div>
+    </div>
+</section>
+<script>
+
+  //delete button
+
+  $(document).on('click', '.delete-button', function(e) {
+
+    e.preventDefault();
+
+    $.ajax({
+
+        type: 'POST', 
+        url: '{% url "cart-delete" %}',
+        data: {
+            product_id: $(this).data('index'),
+            csrfmiddlewaretoken: "{{csrf_token}}",
+            action: 'post'
+        },
+        success: function(json){
+
+            //console.log(json)
+            location.reload();
+            document.getElementById("cart-qty").textContent = json.qty
+
+            document.getElementById("total").textContent = json.total
+
+        },
+        error: function(xhr, errmsg, err){
+
+        }
+
+    });
+})
+
+
+  //update button
+
+  $(document).on('click', '.update-button', function(e) {
+    e.preventDefault();
+
+    var theproductid = $(this).data('index');
+    var quantityInput = $('#quantity-' + theproductid);
+    var newQuantity = quantityInput.val(); // Get the value of the input field
+
+    $.ajax({
+        type: 'POST',
+        url: '{% url "cart-update" %}',
+        data: {
+            product_id: theproductid,
+            product_quantity: newQuantity,
+            csrfmiddlewaretoken: "{{ csrf_token }}",
+            action: 'post'
+        },
+        success: function(json) {
+            location.reload(); // Reload the page to reflect the updated quantity
+            document.getElementById("cart-qty").textContent = json.qty; // Update cart quantity
+            document.getElementById("total").textContent = json.total; // Update total
+        },
+        error: function(xhr, errmsg, err) {
+            console.error("Error: " + errmsg);
+        }
+    });
+});
+
+$(document).on('click', '.quantity-left-minus', function(e) {
+    e.preventDefault();
+    const productId = $(this).data('product-id');
+    const quantityInput = $(`#quantity-${productId}`);
+    let currentQuantity = parseInt(quantityInput.val());
+
+    if (!isNaN(currentQuantity) && currentQuantity > 1) {
+        quantityInput.val(currentQuantity - 1);
+    } else {
+        alert("Quantity must be at least 1.");
+    }
+});
+
+$(document).on('click', '.quantity-right-plus', function(e) {
+    e.preventDefault();
+    const productId = $(this).data('product-id');
+    const quantityInput = $(`#quantity-${productId}`);
+    let currentQuantity = parseInt(quantityInput.val());
+
+    if (!isNaN(currentQuantity)) {
+        quantityInput.val(currentQuantity + 1);
+    } else {
+        alert("Invalid quantity value.");
+    }
+});
+
+ </script>
+{% endblock %}
