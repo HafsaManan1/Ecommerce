@@ -60,7 +60,16 @@
 
         <!-- Subtotal and Checkout -->
         <div class="text-end mt-4">
-            <h6 class="fw-bold">Subtotal: $ <span id="total">{{ cart.get_total }}</span></h6>
+            <h6 class="fw-bold">
+                Subtotal: 
+                {% if cart.get_total.is_discount_applied %}
+                    <span class="text-decoration-line-through text-muted">${{ cart.get_total.total_price }}</span>
+                    $<span id="total">{{ cart.get_total.discounted_price }}</span>
+                    <small class="text-success"> (25% discount applied)</small>
+                {% else %}
+                    $<span id="total">{{ cart.get_total.total_price }}</span>
+                {% endif %}
+            </h6>
             <a href="{% url 'checkout' %}" class="btn btn-primary btn-lg mt-2">Proceed to Checkout</a>
         </div>
     </div>

@@ -62,7 +62,7 @@ def complete_order(request):
         shipping_address = (address1 + "\n" + address2 + "\n" + city + "\n" + state + "\n" + zipcode)
         # Shopping cart information
         cart = Cart(request)
-        total_cost = cart.get_total()
+        total_cost = cart.get_total()['discounted_price']
 
         '''
         Order Variations:
@@ -97,9 +97,88 @@ def complete_order(request):
         response = JsonResponse({'success': order_success})
         return response
 
+# def create_checkout_session(request):
+#     if request.method == 'POST':
+#         try:
+#             session = stripe.checkout.Session.create(
+#                 payment_method_types=['card'],
+#                 line_items=[{
+#                     'price_data': {
+#                         'currency': 'usd',
+#                         'product_data': {
+#                             'name': 'Total Order',
+#                         },
+#                         'unit_amount': int(Cart(request).get_total() * 100),
+#                     },
+#                     'quantity': 1,
+#                 }],
+#                 mode='payment',
+    
+#                 success_url=settings.PAYMENT_SUCCESS_URL,
+#                 cancel_url=settings.PAYMENT_CANCEL_URL,
+#             )
+#             return JsonResponse({'id': session.id})
+#         except Exception as e:
+#             return JsonResponse({'error': str(e)})
+
+# def create_checkout_session(request):
+#     if request.method == 'POST':
+#         print('HELLO1')
+#         try:
+#             user = request.user
+#             if user.is_authenticated and user.order_set.exists():
+#                 print('HELLO2')
+#                 last_order = user.order_set.latest('date_order') 
+#                 total_cost = last_order.amount_paid  
+
+#             else:
+#                 cart = Cart(request)
+#                 print(total_cost)
+#                 total_cost = cart.get_total()['discounted_price'] 
+#             print('HELLO3')
+#             print(total_cost)
+#             # Create a Stripe checkout session
+#             session = stripe.checkout.Session.create(
+#                 payment_method_types=['card'],
+#                 line_items=[{
+#                     'price_data': {
+#                         'currency': 'usd',
+#                         'product_data': {
+#                             'name': 'Total Order',
+#                         },
+#                         'unit_amount': int(total_cost * 100),  # Convert to cents
+#                     },
+#                     'quantity': 1,
+#                 }],
+#                 mode='payment',
+#                 success_url=settings.PAYMENT_SUCCESS_URL,
+#                 cancel_url=settings.PAYMENT_CANCEL_URL,
+#             )
+#             return JsonResponse({'id': session.id})
+
+#         except Exception as e:
+#             return JsonResponse({'error': str(e)})
 def create_checkout_session(request):
     if request.method == 'POST':
+        print('HELLO1')
         try:
+            user = request.user
+            print(f'User Authenticated: {user.is_authenticated}')  # Check if the user is authenticated
+            if user.is_authenticated and user.order_set.exists():
+                print('HELLO2')
+                last_order = user.order_set.latest('date_order') 
+                total_cost = last_order.amount_paid  
+
+            else:
+                print('HELLO2 else')  # Debugging for else block
+                cart = Cart(request)
+                print('Cart Details:', cart.get_total())  # Print details of the cart to verify
+                total_cost = cart.get_total()['discounted_price'] 
+
+            print('HELLO3')
+            print(f'Total Cost: {total_cost}')  # Debugging the final total_cost value
+
+            # Create a Stripe checkout session
             session = stripe.checkout.Session.create(
                 payment_method_types=['card'],
                 line_items=[{
@@ -108,16 +187,16 @@ def create_checkout_session(request):
                         'product_data': {
                             'name': 'Total Order',
                         },
-                        'unit_amount': int(Cart(request).get_total() * 100),
+                        'unit_amount': int(total_cost * 100),  # Convert to cents
                     },
                     'quantity': 1,
                 }],
                 mode='payment',
-    
                 success_url=settings.PAYMENT_SUCCESS_URL,
                 cancel_url=settings.PAYMENT_CANCEL_URL,
             )
             return JsonResponse({'id': session.id})
-        except Exception as e:
-            return JsonResponse({'error': str(e)})
 
+        except Exception as e:
+            print(f'Error: {str(e)}')  # Print the error message
+            return JsonResponse({'error': str(e)})

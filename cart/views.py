@@ -30,7 +30,7 @@ def cart_update(request):
         product_quantity = int(request.POST.get('product_quantity'))
         cart.update(product=product_id, qty=product_quantity)
         cart_quantity = cart.__len__()
-        cart_total = cart.get_total()
+        cart_total = cart.get_total()['discounted_price']
         response = JsonResponse({'qty': cart_quantity, 'total': cart_total })
         messages.success(request, 'Item updated into the cart.')
         return response
@@ -42,7 +42,7 @@ def cart_delete(request):
         product_id = int(request.POST.get('product_id'))
         cart.delete(product=product_id)
         cart_quantity = cart.__len__()
-        cart_total = cart.get_total()
+        cart_total = cart.get_total()['discounted_price']
         response = JsonResponse({'qty': cart_quantity, 'total': cart_total })
         messages.success(request, 'Item deleted from the cart.')
         return response
