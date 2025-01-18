@@ -31,10 +31,12 @@ environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# DEBUG = True
+DEBUG = False
 
 # ALLOWED_HOSTS = ['d30549xqe6u29r.cloudfront.net', 'localhost', '127.0.0.1']
-ALLOWED_HOSTS = []
+# ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['foodmart.osolglobal.tech', 'localhost', '127.0.0.1']
 
 # Application definition
 
@@ -65,8 +67,11 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
+# CSRF_TRUSTED_ORIGINS = [
+#     'https://d30549xqe6u29r.cloudfront.net',
+# ]
 CSRF_TRUSTED_ORIGINS = [
-    'https://d30549xqe6u29r.cloudfront.net',
+    'https://foodmart.osolglobal.tech',
 ]
 
 ROOT_URLCONF = "ecommerce.urls"

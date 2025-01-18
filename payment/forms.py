@@ -44,14 +44,28 @@ class ShippingForm(forms.ModelForm):
             raise ValidationError('City should only contain alphabets and spaces.')
         return city
 
+    # def clean_state(self):
+    #     state = self.cleaned_data.get('state')
+    #     if not re.match(r'^[A-Za-z\s]+$', state):
+    #         raise ValidationError('State should only contain alphabets and spaces.')
+    #     return state
+
+    # def clean_zipcode(self):
+    #     zipcode = self.cleaned_data.get('zipcode')
+    #     if not re.match(r'^\d{5}(-\d{4})?$', zipcode):
+    #         raise ValidationError('Enter a valid zipcode (e.g., 12345 or 12345-6789).')
+    #     return zipcode
+
     def clean_state(self):
         state = self.cleaned_data.get('state')
-        if not re.match(r'^[A-Za-z\s]+$', state):
-            raise ValidationError('State should only contain alphabets and spaces.')
+        if state:  # Only validate if state is not empty or None
+            if not re.match(r'^[A-Za-z\s]+$', state):
+                raise ValidationError('State should only contain alphabets and spaces.')
         return state
-
+    
     def clean_zipcode(self):
         zipcode = self.cleaned_data.get('zipcode')
-        if not re.match(r'^\d{5}(-\d{4})?$', zipcode):
-            raise ValidationError('Enter a valid zipcode (e.g., 12345 or 12345-6789).')
+        if zipcode:  # Only validate if zipcode is not empty or None
+            if not re.match(r'^\d{5}(-\d{4})?$', zipcode):
+                raise ValidationError('Enter a valid zipcode (e.g., 12345 or 12345-6789).')
         return zipcode
