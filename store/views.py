@@ -19,10 +19,11 @@ def store(request):
     user = request.user
     wishlist_product_ids = []
     latest_products = Product.objects.order_by('-id')[:5]
+    is_first_purchase = False
     if user.is_authenticated:
-        # Get all product IDs in the user's wishlist
         wishlist_product_ids = Wishlist.objects.filter(user=user).values_list('product_id', flat=True)
-    context = {'my_products': all_products, 'show_navbar': True,'wishlist_product_ids': wishlist_product_ids, 'latest_products': latest_products}
+        is_first_purchase = not user.order_set.exists() 
+    context = {'my_products': all_products, 'show_navbar': True,'wishlist_product_ids': wishlist_product_ids, 'latest_products': latest_products, 'is_first_purchase' : is_first_purchase}
     return render(request, 'store/store.html', context)
 
 def categories(request):
@@ -44,10 +45,12 @@ def product_info(request,product_slug):
         can_review = OrderItem.objects.filter(user=user, product=product).exists()
         review_exists = ReviewRating.objects.filter(user=user, product=product).exists()
         product_in_wishlist = Wishlist.objects.filter(user=request.user, product=product).exists()
+        
 
     reviews = ReviewRating.objects.filter(product=product).order_by('-created_date')
+    related_products = Product.objects.filter(category=product.category).exclude(id=product.id)[:6]
 
-    context = {'product':product, 'can_review': can_review, 'reviews': reviews, 'review_exists': review_exists, 'product_in_wishlist': product_in_wishlist, 'show_navbar': True, 'rating_range': range(1, 6),}
+    context = {'product':product, 'can_review': can_review, 'reviews': reviews, 'review_exists': review_exists, 'product_in_wishlist': product_in_wishlist, 'show_navbar': True, 'rating_range': range(1, 6), 'related_products':related_products}
     return render(request,'store/product-info.html', context)
 
 def list_category(request, category_slug=None):
@@ -133,10 +136,6 @@ def faq(request):
     context = {'show_navbar': True}
     return render(request, 'store/faq.html', context)
 
-# def contact(request):
-#     context = {'show_navbar': True}
-#     return render(request, 'store/contact.html', context)
-
 def privacy_policy(request):
     context = {'show_navbar': True}
     return render(request, 'store/privacy-policy.html', context)
@@ -152,15 +151,13 @@ def contact(request):
         subject = request.POST.get("subject")
         message = request.POST.get("message")
 
-        # Construct the email content
         full_message = f"Message from {name} ({email}):\n\n{message}"
         try:
-            # Create the EmailMessage object
             email_message = EmailMessage(
                 subject=subject,
                 body=full_message,
-                from_email=settings.EMAIL_HOST_USER,  # Sender's email
-                to=[settings.CONTACT_EMAIL],         # Receiver's email          
+                from_email=settings.EMAIL_HOST_USER,  
+                to=[settings.CONTACT_EMAIL],                  
             )
             print(email_message)
             email_message.send()
@@ -169,6 +166,6 @@ def contact(request):
         except Exception as e:
             messages.error(request, "There was an error sending your message. Please try again later.")
         
-        return redirect("contact")  # Replace 'contact' with your contact page URL name
+        return redirect("contact")  
 
     return render(request, "store/contact.html")

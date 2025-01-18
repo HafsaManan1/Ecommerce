@@ -81,10 +81,33 @@ class Cart():
         else:
             total = sum(Decimal(item['price']) * item['qty'] for item in self.cart.values())
         
-        # if self.user and not self.user.order_set.exists():  # Assuming `orders` is the related name for the user's orders
-        #     total *= Decimal(0.75)  # Apply 25% discount
+        if self.user and not self.user.order_set.exists():  
+            total *= Decimal(0.75) 
 
         return total
+
+    # def get_total(self):
+    #     total_price = 0
+    #     discounted_price = 0
+    #     is_discount_applied = False
+
+    #     if self.user:
+    #         total_price = sum(Decimal(item.product.price) * item.quantity for item in self.cart)
+    #         if not self.user.order_set.exists():  # Check for first purchase
+    #             discounted_price = total_price * Decimal(0.75)
+    #             is_discount_applied = True
+    #         else:
+    #             discounted_price = total_price
+    #     else:
+    #         total_price = sum(Decimal(item['price']) * item['qty'] for item in self.cart.values())
+    #         discounted_price = total_price  # No discount for guest users
+
+    #     return {
+    #         'total_price': total_price,
+    #         'discounted_price': discounted_price,
+    #         'is_discount_applied': is_discount_applied,
+    #     }
+
 
     def delete(self, product):
         product_id = str(product)

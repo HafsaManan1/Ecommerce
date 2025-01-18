@@ -180,10 +180,10 @@ $(document).on('click', '.btn-add-to-cart', function (e) {
         let currentQuantity = parseInt(quantityInput.val());
 
         if (!isNaN(currentQuantity)) {
-            if (currentQuantity<50){
+            if (currentQuantity<9){
                 quantityInput.val(currentQuantity + 1);
             } else {
-                alert("Maximum quantity allowed is 50.");
+                alert("Maximum quantity allowed is 9.");
             }
             
         } else {

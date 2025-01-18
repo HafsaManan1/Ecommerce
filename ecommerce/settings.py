@@ -33,6 +33,7 @@ SECRET_KEY = env('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+# ALLOWED_HOSTS = ['d30549xqe6u29r.cloudfront.net', 'localhost', '127.0.0.1']
 ALLOWED_HOSTS = []
 
 # Application definition
@@ -51,7 +52,6 @@ INSTALLED_APPS = [
     "wishlist", #Django app
     "mathfilters",
     'crispy_forms',
-
 ]
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
@@ -64,6 +64,9 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+]
+CSRF_TRUSTED_ORIGINS = [
+    'https://d30549xqe6u29r.cloudfront.net',
 ]
 
 ROOT_URLCONF = "ecommerce.urls"
@@ -84,6 +87,7 @@ TEMPLATES = [
                 "django.contrib.messages.context_processors.messages",
                 "store.views.categories",
                 "cart.context_processors.cart",
+                
             ],
         },
     },

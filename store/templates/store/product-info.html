@@ -89,34 +89,7 @@
 
     </main>
 </div>
-
-<!-- <div class="col">
-                        <div class="row p-3">
-                            <div class="d-flex align-items-center justify-content-between">
-                                {% if user.is_authenticated %}
-                                {% if product_in_wishlist %}
-                                <button type="button" id="wishlist-button" class="btn btn-danger btn-sm"
-                                    data-product-id="{{ product.id }}" style="color:#fff">
-                                    <a href="#" class="btn-wishlist"><svg width="24" height="24">
-                                            <use xlink:href="#heart"></use>
-                                        </svg></a>
-                                </button>
-                                {% else %}
-                                <button type="button" id="wishlist-button" class="btn btn-secondary btn-sm"
-                                    data-product-id="{{ product.id }}">
-                                    <a href="#" class="btn-wishlist"><svg width="24" height="24">
-                                            <use xlink:href="#heart"></use>
-                                        </svg></a>
-                                </button>
-                                {% endif %}
-                                {% endif %}</a>
-                            </div>
-                        </div>
-                    </div> -->
-
-
-<!-- Review Submission Section -->
-<div class="container bg-light">
+<div>
 {% if can_review %}
 {% if review_exists %}
 {% else %}
@@ -158,31 +131,29 @@
 </div>
 {% endif %}
 {% endif %}
-
-
 <div class="container mt-4">
     <h3 class="text-primary">Reviews</h3>
     {% if reviews %}
     <div class="list-group">
         {% for review in reviews %}
-        <div class="list-group-item">
-            <p>{{ review.review }}</p>
-            <p class="text-muted">Rating:
+        <div class="review-item mb-3">
+            <p class="text-muted mb-1">
                 <span class="rating">
-                    {{ review.ratings }}
                     {% for i in "12345" %}
                     <i
                         class="fa fa-star {% if forloop.counter <= review.ratings %}text-primary{% else %}text-muted{% endif %}"></i>
                     {% endfor %}
+                    <strong>{{ review.subject }}</strong>
                 </span>
             </p>
-            <small class="text-muted">Reviewed on: {{ review.created_date }}</small><br>
+            <small class="text-muted d-block mb-1">
+                Reviewed on {{ review.created_date|date:"Y-m-d" }} by {{ review.user }}
+            </small>
+            <p class="mb-1">{{ review.review }}</p>
             {% if review.image %}
             <img src="{{ review.image.url }}" alt="Review Image" class="img-fluid" style="max-width: 200px;">
             {% endif %}
-
         </div>
-        <br>
         {% endfor %}
     </div>
     {% else %}
@@ -190,6 +161,38 @@
     {% endif %}
 </div>
 </div>
+<section class="overflow-hidden">
+    <h3 class="text-center mb-4 text-primary">You May Also Like</h3>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="d-flex align-items-center category-carousel-wrapper">
+                    <!-- Left Swiper Button -->
+                    <button class="swiper-prev category-carousel-prev btn btn-yellow">❮</button>
+                    <!-- Swiper Container -->
+                    <div class="category-carousel swiper flex-grow-1">
+                        <div class="swiper-wrapper">
+                            {% for product in related_products %}
+                            <a href="{{product.get_absolute_url}}" class="nav-link category-item swiper-slide" style="padding: 30px 20px;">                        
+                                    <img src="{{product.image.url}}" class="card-img-top img-fluid rounded" alt="Category Thumbnail">        
+                                        <h5 class="card-title text-truncate">{{ product.title | capfirst }}</h5>
+                                        <p class="card-text text-muted">${{ product.price }}</p>                    
+                            </a>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <!-- Right Swiper Button -->
+                    <button class="swiper-next category-carousel-next btn btn-yellow">❯</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+
 
 <script>
     $(document).on('click', '#add-button', function (e) {
@@ -211,55 +214,7 @@
             }
         });
     });
-    
-   // On Add to Cart button click
-//$(document).on('click', '.btn-add-to-cart', function (e) {
-//    e.preventDefault();
-//    const productId = $(this).data('product-id');
-//    const quantity = $(`#quantity-${productId}`).val();
-//
-//    // Show loader
-//    $('#loader').fadeIn();
-//
-//    $.ajax({
-//        type: 'POST',
-//        url: '{% url "cart-add" %}',
-//        data: {
-//            product_id: productId,
-//            product_quantity: quantity,
-//            csrfmiddlewaretoken: '{{ csrf_token }}',
-//            action: 'post'
-//        },
-//        success: function (json) {
-//            $('#cart-qty').text(json.qty);
-//
-//            // Set a flag in localStorage to open the off-canvas cart
-//            localStorage.setItem('openCart', 'true');
-//
-//            // Reload the page
-//            location.reload();
-//        },
-//        error: function (xhr, errmsg, err) {
-//            console.error(xhr.status + ": " + xhr.responseText);
-//
-//            // Hide loader in case of error
-//            $('#loader').fadeOut();
-//        }
-//    });
-//});
-//
-//// On Page Load
-//$(document).ready(function () {
-//    // Check if the flag is set to open the cart
-//    if (localStorage.getItem('openCart') === 'true') {
-//        // Remove the flag
-//        localStorage.removeItem('openCart');
-//
-//        // Open the off-canvas cart
-//        const offCanvasCart = new bootstrap.Offcanvas($('#offcanvasCart')[0]);
-//        offCanvasCart.show();
-//    }
-//});
+
 $(document).on('click', '.btn-add-to-cart', function (e) {
     e.preventDefault();
     const productId = $(this).data('product-id');
@@ -357,10 +312,10 @@ $(document).on('click', '.btn-add-to-cart', function (e) {
         let currentQuantity = parseInt(quantityInput.val());
 
         if (!isNaN(currentQuantity)) {
-            if (currentQuantity<50){
+            if (currentQuantity<9){
                 quantityInput.val(currentQuantity + 1);
             } else {
-                alert("Maximum quantity allowed is 50.");
+                alert("Maximum quantity allowed is 9.");
             }
             
         } else {

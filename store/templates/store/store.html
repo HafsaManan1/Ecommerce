@@ -1,20 +1,9 @@
 {% extends "./base.html" %}
 {% load static %}
-
 {% block content %}
 
 <section class="overflow-hidden">
   <div class="container-fluid">
-    <!-- <div class="row">
-      <div class="col-md-12">
-        <div class="section-header d-flex flex-wrap justify-content-between mb-5">
-          <h2 class="section-title">Category</h2>
-          <div class="d-flex align-items-center">
-            <a href="{% url 'store' %}" class="btn-link text-decoration-none">View All Categories →</a>
-          </div>
-        </div>
-      </div>
-    </div> -->
     <div class="row">
       <div class="col-md-12">
         <div class="d-flex align-items-center category-carousel-wrapper">
@@ -164,7 +153,6 @@
             </div>
           </div>
 
-          <!-- Right Swiper Button -->
           <button class="swiper-next brand-carousel-next btn btn-yellow ms-3">❯</button>
         </div>
       </div>
@@ -225,7 +213,7 @@
                           <use xlink:href="#star-solid"></use>
                       </svg> {{product.get_average_rating}}
                   </span>
-                    <div class="align-item-center justify-content-between">
+                  <div class="align-item-center justify-content-between">
                     <div class="d-flex align-items-center justify-content-between">
                       <div class="input-group product-qty">
                         <span class="input-group-btn">
@@ -237,7 +225,7 @@
                           </button>
                         </span>
                         <input type="text" id="quantity-{{ product.id }}" name="quantity"
-                          class="form-control input-number" value="1" style="border-color: white;" readonly>
+                          class="form-control input-number" value="1" style="border-color: white; width: 30px;" readonly>
                         <span class="input-group-btn">
                           <button type="button" class="quantity-right-plus btn btn-success btn-number" data-type="plus"
                             data-product-id="{{ product.id }}">
@@ -266,6 +254,7 @@
       </div>
     </div>
   </div>
+</section>
   <section class="py-0">
     <div class="container-fluid">
 
@@ -309,7 +298,7 @@
               </div>
               <div>
                 <h5 class="mb-1">Delivery</h5>
-                <p class="mb-0 text-muted">Enjoy free delivery on all orders above $50.</p>
+                <p class="mb-0 text-muted">Enjoy free delivery on all of your orders.</p>
               </div>
             </div>
           </div>
@@ -380,55 +369,6 @@
   
 
   <script>
-   // On Add to Cart button click
-//$(document).on('click', '.btn-add-to-cart', function (e) {
-//  e.preventDefault();
-//  const productId = $(this).data('product-id');
-//  const quantity = $(`#quantity-${productId}`).val();
-//
-//  // Show loader
-//  $('#loader').fadeIn();
-//
-//  $.ajax({
-//      type: 'POST',
-//      url: '{% url "cart-add" %}',
-//      data: {
-//          product_id: productId,
-//          product_quantity: quantity,
-//          csrfmiddlewaretoken: '{{ csrf_token }}',
-//          action: 'post'
-//      },
-//      success: function (json) {
-//          $('#cart-qty').text(json.qty);
-//
-//          // Set a flag in localStorage to open the off-canvas cart
-//          localStorage.setItem('openCart', 'true');
-//
-//          // Reload the page
-//          location.reload();
-//      },
-//      error: function (xhr, errmsg, err) {
-//          console.error(xhr.status + ": " + xhr.responseText);
-//
-//          // Hide loader in case of error
-//          $('#loader').fadeOut();
-//      }
-//  });
-//});
-//
-//// On Page Load
-//$(document).ready(function () {
-//  // Check if the flag is set to open the cart
-//  if (localStorage.getItem('openCart') === 'true') {
-//      // Remove the flag
-//      localStorage.removeItem('openCart');
-//
-//      // Open the off-canvas cart
-//      const offCanvasCart = new bootstrap.Offcanvas($('#offcanvasCart')[0]);
-//      offCanvasCart.show();
-//  }
-//});
-
 $(document).on('click', '.btn-add-to-cart', function (e) {
   e.preventDefault();
   const productId = $(this).data('product-id');
@@ -452,7 +392,7 @@ $(document).on('click', '.btn-add-to-cart', function (e) {
           // Fetch updated cart content
           $.ajax({
               type: 'GET',
-              url: '{% url "cart-partial" %}', // URL to fetch the updated cart HTML
+              url: '{% url "cart-partial" %}', 
               success: function (html) {
                   // Replace the off-canvas cart content
                   $('#offcanvasCart .offcanvas-body').html(html);
@@ -510,7 +450,6 @@ $(document).on('click', '.btn-add-to-cart', function (e) {
       });
     });
 
-
     $(document).on('click', '.quantity-left-minus', function (e) {
       e.preventDefault();
       const productId = $(this).data('product-id');
@@ -531,10 +470,10 @@ $(document).on('click', '.btn-add-to-cart', function (e) {
       let currentQuantity = parseInt(quantityInput.val());
 
       if (!isNaN(currentQuantity)) {
-          if (currentQuantity<50){
+          if (currentQuantity<9){
               quantityInput.val(currentQuantity + 1);
           } else {
-              alert("Maximum quantity allowed is 50.");
+              alert("Maximum quantity allowed is 9.");
           }
           
       } else {
