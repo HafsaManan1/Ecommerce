@@ -151,13 +151,13 @@
             </small>
             <p class="mb-1">{{ review.review }}</p>
             {% if review.image %}
-            <img src="{{ review.image.url }}" alt="Review Image" class="img-fluid" style="max-width: 200px;">
+            <img src="{{review.image.url}}" alt="Review Image" class="img-fluid" style="max-width: 200px;">
             {% endif %}
         </div>
         {% endfor %}
     </div>
     {% else %}
-    <p>No reviews yet. Be the first to review!</p>
+    <p>No reviews on this product yet.</p>
     {% endif %}
 </div>
 </div>

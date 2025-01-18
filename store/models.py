@@ -56,7 +56,7 @@ class ReviewRating(models.Model):
     subject = models.CharField(max_length=100, blank=True)
     review = models.TextField(max_length=500, blank=True)
     ratings = models.FloatField()
-    image = models.ImageField(upload_to='review_images/', blank=True, null=True)
+    image = models.ImageField(upload_to='reviews/', blank=True, null=True)
     status = models.BooleanField(default=True)
     created_date = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now_add=True)
