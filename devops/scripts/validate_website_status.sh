@@ -1,6 +1,8 @@
 #!/bin/bash
 set -e
 
+echo "Validating website status...."
+
 health_check="https://foodmart.osolglobal.tech/"
 
 http_status=$(curl -o /dev/null -s -w "%{http_code}" "$health_check")
