@@ -1,12 +1,13 @@
 #!/bin/bash
+set -e
 
-# Check the HTTP status code using curl
-status_code=$(curl -s -o /dev/null -w "%{http_code}" "$url")
+http_status=$(curl -o /dev/null -s -w "%{http_code}" "$url")
 
-# Check if the status code is 200
-if [ "$status_code" -eq 200 ]; then
-    echo "The website is up and returned status code 200."
+if [ "$http_status" -eq 200 ]; then
+    echo "Website is up and running. Returned HTTP status: $http_status"
+    exit 0
 else
-    echo "The website returned status code $status_code."
+    echo "Website is down. Returned HTTP status: $http_status"
+    exit 1
 fi
 

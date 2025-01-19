@@ -2,7 +2,7 @@
 
 set -e
 
-VENV_DIR="/home/$USER/Ecommerce/.venv"
+VENV_DIR="/home/$USER/Ecommerce/venv"
 
 cd /home/$USER/Ecommerce/
 
@@ -13,7 +13,7 @@ if [ -d "$VENV_DIR" ]; then
     source "$VENV_DIR/bin/activate"
 else
     echo "Virtual environment not found. Creating one..."
-    python3 -m venv .venv
+    python3 -m venv venv
     if [ $? -eq 0 ]; then
         echo "Virtual environment created successfully."
         source "$VENV_DIR/bin/activate"
