@@ -1,7 +1,7 @@
 #!/bin/bash
 
 set -e
-
+echo "Hey from server"
 #sudo chown -R "$USER:$USER" "$Destination_Dir"
 
 #cd ./devops/scripts/
