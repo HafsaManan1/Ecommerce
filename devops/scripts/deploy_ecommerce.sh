@@ -8,3 +8,4 @@ cd /home/ubuntu/Ecommerce/devops/scripts/
 ./install_dependencies.sh
 ./start_server.sh
 ./validate_service.sh
+./validate_website_status.sh
