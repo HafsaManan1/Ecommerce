@@ -6,5 +6,6 @@ set -e
 cd /home/ubuntu/Ecommerce/devops/scripts/
 
 ./install_dependencies.sh
+./migrate_db.sh
 ./start_server.sh
 ./validate_service.sh
