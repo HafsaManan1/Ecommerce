@@ -1,7 +1,6 @@
 #!/bin/bash
 
 set -e
-rsync -avzu -e "ssh -i /var/lib/jenkins/.ssh/web-dev-ecommerce-py-01.pem" --exclude 'venv/' /home/jenkins/jenkins-agent/workspace/ecommerce-dev-py-01/ ubuntu@43.205.17.209:/home/ubuntu/Ecommerce/
 
 #sudo chown -R "$USER:$USER" "$Destination_Dir"
 
