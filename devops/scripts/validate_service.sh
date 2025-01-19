@@ -2,7 +2,7 @@
 
 # Exit immediately if a command exits with a non-zero status
 set -e
-health_check="https://$domain_name/"
+health_check="https://foodmart.osolglobal.tech/"
 
 # Check Gunicorn status
 echo "Checking Gunicorn service status..."
